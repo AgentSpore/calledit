@@ -123,3 +123,52 @@ input[type=range]::-moz-range-thumb {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* Language switcher */
+.lang-switcher {
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  background: #1E2B47;
+  border: 1px solid #2A3A5C;
+  border-radius: 8px;
+  padding: 2px 4px;
+  flex-shrink: 0;
+}
+.lang-btn {
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'JetBrains Mono', monospace;
+  color: #93A1C0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: color 150ms, background 150ms;
+  line-height: 1.6;
+}
+.lang-btn:hover {
+  color: #F1F5FB;
+}
+.lang-btn.lang-active {
+  background: #F59E0B;
+  color: #0E1525;
+}
+.lang-sep {
+  color: #2A3A5C;
+  font-size: 11px;
+  user-select: none;
+}
+
+/* Ensure header row doesn't overflow on 360px */
+@media (max-width: 400px) {
+  .lang-switcher {
+    font-size: 11px;
+  }
+  #btn-new-claim {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 12px;
+  }
+}
