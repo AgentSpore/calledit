@@ -24,6 +24,295 @@ const API = {
   getCalibration:     (code, id) => API.request('GET', `/boards/${code}/members/${id}/calibration`),
 };
 
+// ─── i18n ────────────────────────────────────────────────────────────────────
+
+const STR = {
+  en: {
+    landing: {
+      hero: 'Who actually<br/>calls it?',
+      subhead: "Drop predictions with your crew. Track who's sharp, who's wishful,\n          and who always says \"I told you so.\"",
+      startBoard: 'Start a new board',
+      boardPlaceholder: 'Friday Crew · Startup Bets · Q3 Calls…',
+      createBoard: 'Create Board →',
+      creating: 'Creating…',
+      joinBoard: 'Join with a code',
+      joinPlaceholder: 'DEMO01',
+      joinBtn: 'Go →',
+      seeDemo: 'See the demo board (DEMO01) →',
+      footer: 'CalledIt · prediction accountability for people who <em>know</em> they\'re right',
+      errNoName: 'Give your board a name.',
+    },
+    board: {
+      allBoards: '← All boards',
+      copyLink: 'Copy link',
+      copied: '✓ Copied!',
+      openPredictions: 'Open Predictions',
+      resolved: 'Resolved',
+      newClaim: '+ New Claim',
+      noOpen: 'No open predictions yet. Make the first call!',
+      noOpenShort: 'No open predictions yet.',
+      notFound: 'Board not found',
+      notFoundDesc: 'doesn\'t exist yet — or it\'s a typo.',
+      backHome: '← Back to home',
+    },
+    me: {
+      youAre: 'You are',
+      pick: '— pick yourself —',
+      addMe: '+ Add me…',
+    },
+    leaderboard: {
+      title: '🏆 Leaderboard',
+      briерHint: 'Brier score (lower = sharper) · click to see calibration',
+      noRanked: 'No ranked members yet. Resolve 3 predictions to rank.',
+      unranked: 'Unranked (need 3+ calls)',
+      needMoreCalls: 'needs more calls',
+      makeThreeCalls: 'Make 3 calls each to rank.',
+      calls: '{n} calls',
+      acc: '{acc}% acc',
+      labels: {
+        oracle: 'oracle',
+        sharp: 'sharp',
+        decent: 'decent',
+        wishful: 'wishful',
+      },
+    },
+    calibration: {
+      title: 'Calibration chart',
+      confidence: 'Confidence %',
+      reality: 'Reality %',
+      footer: 'Confidence vs Reality · dashed = perfect',
+      brier: 'Brier',
+      accuracy: 'Accuracy',
+      calls: 'Calls',
+      netStake: 'Net stake',
+      yourCalls: 'Your calls',
+      perfect: 'Perfect',
+      failedLoad: 'Failed to load calibration.',
+    },
+    pred: {
+      due: 'Due {date}',
+      dueNow: 'DUE NOW',
+      stake: '{stake} pts stake',
+      yourCall: 'Your call',
+      updateYourCall: 'Update your call',
+      dropYourCall: 'Drop your call',
+      updateCall: 'Update call',
+      itHappened: '✓ It happened',
+      itDidnt: "✗ It didn't",
+      resolve: 'Resolve',
+      happened: 'happened',
+      didnt: "didn't",
+      noForecasts: 'No forecasts yet.',
+      saving: 'Saving…',
+      resolving: 'Resolving…',
+      deleteConfirm: 'Delete this prediction?',
+    },
+    hints: {
+      almostNoChance: 'almost no chance',
+      unlikely: 'unlikely',
+      longShot: 'long shot',
+      coinFlip: 'coin flip',
+      likely: 'likely',
+      prettyConfident: 'pretty confident',
+      nearCertain: 'near-certain',
+      allIn: 'all in',
+    },
+    modal: {
+      newClaim: 'New Claim',
+      claimLabel: 'What are you calling?',
+      claimPlaceholder: 'We ship before Friday · Evals exceed 90% · Leo will admit he was wrong…',
+      resolveByLabel: 'Resolve by',
+      stakeLabel: 'Stake (optional points)',
+      submitClaim: 'Drop this claim →',
+      posting: 'Posting…',
+      cancel: 'Cancel',
+      errWriteClaim: 'Write your claim.',
+      errPickDate: 'Pick a resolve date.',
+      joinBoard: 'Join this board',
+      yourName: 'Your name',
+      namePlaceholder: 'Your name',
+      join: 'Join →',
+      joining: 'Joining…',
+      errEnterName: 'Enter your name.',
+    },
+    toast: {
+      forecastSaved: '📌 Forecast saved!',
+      claimPosted: '🔮 Claim posted!',
+      predDeleted: '🗑️ Prediction deleted.',
+      calledIt: '🎯 {name} called it! Leaderboard updated.',
+      leaderboardUpdated: '🎯 Resolved! Leaderboard updated.',
+      refreshFailed: 'Refresh failed: {msg}',
+      errSave: "Couldn't save — try again",
+    },
+  },
+  ru: {
+    landing: {
+      hero: 'Кто реально<br/>угадывает?',
+      subhead: 'Делайте прогнозы вместе с командой. Следите, кто точный, кто мечтатель\n          и кто всегда говорит «я же говорил».',
+      startBoard: 'Создать новую доску',
+      boardPlaceholder: 'Пятничная команда · Стартап-ставки · Цели Q3…',
+      createBoard: 'Создать доску →',
+      creating: 'Создаём…',
+      joinBoard: 'Присоединиться по коду',
+      joinPlaceholder: 'DEMO01',
+      joinBtn: 'Перейти →',
+      seeDemo: 'Посмотреть демо (DEMO01) →',
+      footer: 'CalledIt · учёт прогнозов для тех, кто <em>знает</em>, что прав',
+      errNoName: 'Дайте доске название.',
+    },
+    board: {
+      allBoards: '← Все доски',
+      copyLink: 'Скопировать',
+      copied: '✓ Скопировано!',
+      openPredictions: 'Открытые прогнозы',
+      resolved: 'Завершённые',
+      newClaim: '+ Новый прогноз',
+      noOpen: 'Открытых прогнозов нет. Сделайте первый!',
+      noOpenShort: 'Открытых прогнозов нет.',
+      notFound: 'Доска не найдена',
+      notFoundDesc: 'не существует — или это опечатка.',
+      backHome: '← На главную',
+    },
+    me: {
+      youAre: 'Вы',
+      pick: '— выберите себя —',
+      addMe: '+ Добавить меня…',
+    },
+    leaderboard: {
+      title: '🏆 Таблица лидеров',
+      briерHint: 'Brier-балл (чем ниже, тем точнее) · нажмите для калибровки',
+      noRanked: 'Участников в рейтинге нет. Закройте 3 прогноза для ранжирования.',
+      unranked: 'Без рейтинга (нужно 3+ прогноза)',
+      needMoreCalls: 'нужно больше прогнозов',
+      makeThreeCalls: 'Сделайте по 3 прогноза для ранжирования.',
+      calls: '{n} прогнозов',
+      acc: '{acc}% точность',
+      labels: {
+        oracle: 'оракул',
+        sharp: 'точный',
+        decent: 'неплохой',
+        wishful: 'мечтатель',
+      },
+    },
+    calibration: {
+      title: 'График калибровки',
+      confidence: 'Уверенность %',
+      reality: 'Реальность %',
+      footer: 'Уверенность vs Реальность · пунктир = идеал',
+      brier: 'Brier',
+      accuracy: 'Точность',
+      calls: 'Прогнозы',
+      netStake: 'Баланс',
+      yourCalls: 'Ваши прогнозы',
+      perfect: 'Идеал',
+      failedLoad: 'Не удалось загрузить калибровку.',
+    },
+    pred: {
+      due: 'До {date}',
+      dueNow: 'СРОК СЕГОДНЯ',
+      stake: 'Ставка {stake} оч.',
+      yourCall: 'Ваш прогноз',
+      updateYourCall: 'Обновить прогноз',
+      dropYourCall: 'Сделать прогноз',
+      updateCall: 'Обновить',
+      itHappened: '✓ Сбылось',
+      itDidnt: '✗ Не сбылось',
+      resolve: 'Зафиксировать',
+      happened: 'сбылось',
+      didnt: 'не сбылось',
+      noForecasts: 'Прогнозов пока нет.',
+      saving: 'Сохраняем…',
+      resolving: 'Фиксируем…',
+      deleteConfirm: 'Удалить этот прогноз?',
+    },
+    hints: {
+      almostNoChance: 'почти невозможно',
+      unlikely: 'маловероятно',
+      longShot: 'слабый шанс',
+      coinFlip: '50 на 50',
+      likely: 'вероятно',
+      prettyConfident: 'уверен',
+      nearCertain: 'почти точно',
+      allIn: 'ва-банк',
+    },
+    modal: {
+      newClaim: 'Новый прогноз',
+      claimLabel: 'Что вы предсказываете?',
+      claimPlaceholder: 'Мы выпустим продукт до пятницы · Оценки превысят 90% · Лео признает ошибку…',
+      resolveByLabel: 'Дата истечения',
+      stakeLabel: 'Ставка (опционально)',
+      submitClaim: 'Создать →',
+      posting: 'Публикуем…',
+      cancel: 'Отмена',
+      errWriteClaim: 'Напишите прогноз.',
+      errPickDate: 'Выберите дату.',
+      joinBoard: 'Присоединиться к доске',
+      yourName: 'Ваше имя',
+      namePlaceholder: 'Ваше имя',
+      join: 'Войти →',
+      joining: 'Входим…',
+      errEnterName: 'Введите имя.',
+    },
+    toast: {
+      forecastSaved: '📌 Прогноз сохранён!',
+      claimPosted: '🔮 Прогноз опубликован!',
+      predDeleted: '🗑️ Прогноз удалён.',
+      calledIt: '🎯 {name} угадал! Таблица обновлена.',
+      leaderboardUpdated: '🎯 Зафиксировано! Таблица обновлена.',
+      refreshFailed: 'Ошибка обновления: {msg}',
+      errSave: 'Не удалось сохранить — повторите',
+    },
+  },
+};
+
+let lang = (localStorage.getItem('calledit_lang') ||
+  ((navigator.language || 'en').toLowerCase().startsWith('ru') ? 'ru' : 'en'));
+
+function t(key, vars = {}) {
+  const parts = key.split('.');
+  let str = STR[lang];
+  for (const p of parts) str = str?.[p];
+  if (!str) { str = STR['en']; for (const p of parts) str = str?.[p]; }
+  if (!str) return key;
+  return str.replace(/\{(\w+)\}/g, (_, k) => vars[k] ?? `{${k}}`);
+}
+
+function setLang(newLang) {
+  lang = newLang;
+  localStorage.setItem('calledit_lang', lang);
+  document.documentElement.lang = lang;
+  // Re-render current view
+  const route = getRoute();
+  if (route.page === 'landing') {
+    renderLanding();
+  } else if (state.board) {
+    renderBoard();
+  }
+}
+
+// Set lang attribute on init
+document.documentElement.lang = lang;
+
+// ─── LANG SWITCHER HTML ──────────────────────────────────────────────────────
+
+function renderLangSwitcher() {
+  return `
+    <div class="lang-switcher" role="group" aria-label="Language">
+      <button class="lang-btn ${lang === 'en' ? 'lang-active' : ''}" data-lang="en" aria-pressed="${lang === 'en'}">EN</button>
+      <span class="lang-sep">|</span>
+      <button class="lang-btn ${lang === 'ru' ? 'lang-active' : ''}" data-lang="ru" aria-pressed="${lang === 'ru'}">RU</button>
+    </div>`;
+}
+
+function wireLangSwitchers() {
+  document.querySelectorAll('[data-lang]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const newLang = btn.dataset.lang;
+      if (newLang !== lang) setLang(newLang);
+    });
+  });
+}
+
 // ─── STATE ───────────────────────────────────────────────────────────────────
 
 let state = {
@@ -66,6 +355,17 @@ $('modal-backdrop').addEventListener('click', e => {
   if (e.target === $('modal-backdrop')) closeModal();
 });
 
+document.addEventListener('keydown', e => {
+  const modalOpen = !$('modal-backdrop').classList.contains('hidden');
+  if (e.key === 'Escape' && modalOpen) { closeModal(); return; }
+  const typing = /^(INPUT|TEXTAREA|SELECT)$/.test((e.target.tagName || ''));
+  // `n` opens the new-claim modal when on a board and not typing
+  if (e.key === 'n' && !typing && !modalOpen && !e.metaKey && !e.ctrlKey) {
+    const btn = document.getElementById('btn-new-claim');
+    if (btn) { e.preventDefault(); btn.click(); }
+  }
+});
+
 function initials(name) {
   return name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
 }
@@ -80,19 +380,21 @@ function fmtBrier(b) {
 
 function fmtDate(iso) {
   if (!iso) return '—';
-  const d = new Date(iso);
-  return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  return new Date(iso).toLocaleDateString(
+    lang === 'ru' ? 'ru-RU' : 'en-US',
+    { day: 'numeric', month: 'short', year: 'numeric' }
+  );
 }
 
 function probHint(v) {
-  if (v <= 10) return 'almost no chance';
-  if (v <= 30) return 'unlikely';
-  if (v <= 45) return 'long shot';
-  if (v <= 55) return 'coin flip';
-  if (v <= 70) return 'likely';
-  if (v <= 85) return 'pretty confident';
-  if (v <= 95) return 'near-certain';
-  return 'all in';
+  if (v <= 10) return t('hints.almostNoChance');
+  if (v <= 30) return t('hints.unlikely');
+  if (v <= 45) return t('hints.longShot');
+  if (v <= 55) return t('hints.coinFlip');
+  if (v <= 70) return t('hints.likely');
+  if (v <= 85) return t('hints.prettyConfident');
+  if (v <= 95) return t('hints.nearCertain');
+  return t('hints.allIn');
 }
 
 function getMyId(code) {
@@ -107,8 +409,8 @@ function setMyId(code, id) {
 
 function copyToClipboard(text, btn) {
   navigator.clipboard.writeText(text).then(() => {
-    btn.innerHTML = '✓ Copied! <span class="copy-tick"></span>';
-    setTimeout(() => { btn.textContent = 'Copy link'; }, 2000);
+    btn.innerHTML = t('board.copied') + ' <span class="copy-tick"></span>';
+    setTimeout(() => { btn.textContent = t('board.copyLink'); }, 2000);
   });
 }
 
@@ -143,56 +445,63 @@ function renderLanding() {
     <div class="min-h-screen flex flex-col">
       <!-- Hero -->
       <div class="flex flex-col items-center justify-center flex-1 px-4 py-20 text-center">
+
+        <!-- Lang switcher in hero area -->
+        <div class="absolute top-4 right-4">
+          ${renderLangSwitcher()}
+        </div>
+
         <div class="mb-6 text-5xl">🎯</div>
-        <h1 class="font-display text-hero text-ink mb-3 leading-tight">Who actually<br/>calls it?</h1>
+        <h1 class="font-display text-hero text-ink mb-3 leading-tight">${t('landing.hero')}</h1>
         <p class="text-muted text-body max-w-md mb-12">
-          Drop predictions with your crew. Track who's sharp, who's wishful,
-          and who always says "I told you so."
+          ${t('landing.subhead')}
         </p>
 
         <!-- Create board -->
         <div class="bg-surface border border-border rounded-card p-6 w-full max-w-md mb-6 card-appear">
-          <h2 class="font-semibold text-h2 mb-4 text-ink">Start a new board</h2>
-          <input id="landing-title" type="text" maxlength="80" placeholder="Friday Crew · Startup Bets · Q3 Calls…"
+          <h2 class="font-semibold text-h2 mb-4 text-ink">${t('landing.startBoard')}</h2>
+          <input id="landing-title" type="text" maxlength="80" placeholder="${t('landing.boardPlaceholder')}"
             class="w-full bg-surface-2 border border-border rounded-control px-4 py-3 text-ink placeholder-muted text-body mb-4 focus:border-brand outline-none" />
           <button id="landing-create" class="w-full bg-brand hover:bg-brand-2 text-bg font-semibold rounded-control py-3 text-body transition-colors">
-            Create Board →
+            ${t('landing.createBoard')}
           </button>
           <div id="landing-create-err" class="text-miss text-sm mt-2 hidden"></div>
         </div>
 
         <!-- Join board -->
         <div class="bg-surface border border-border rounded-card p-6 w-full max-w-md mb-6">
-          <h2 class="font-semibold text-h2 mb-4 text-ink">Join with a code</h2>
+          <h2 class="font-semibold text-h2 mb-4 text-ink">${t('landing.joinBoard')}</h2>
           <div class="flex gap-2">
-            <input id="landing-code" type="text" maxlength="8" placeholder="DEMO01"
+            <input id="landing-code" type="text" maxlength="8" placeholder="${t('landing.joinPlaceholder')}"
               class="flex-1 bg-surface-2 border border-border rounded-control px-4 py-3 text-ink placeholder-muted text-body focus:border-brand outline-none uppercase" />
-            <button id="landing-join" class="bg-surface-2 hover:bg-border text-ink font-semibold rounded-control px-5 py-3 border border-border text-body transition-colors">
-              Go →
+            <button id="landing-join" class="bg-surface-2 hover:bg-border text-ink font-semibold rounded-control px-5 py-3 border border-border text-body transition-colors whitespace-nowrap">
+              ${t('landing.joinBtn')}
             </button>
           </div>
         </div>
 
         <!-- Demo link -->
         <a href="#/DEMO01" class="text-muted hover:text-brand text-body underline transition-colors">
-          See the demo board (DEMO01) →
+          ${t('landing.seeDemo')}
         </a>
       </div>
 
       <!-- Footer -->
       <footer class="text-center text-muted text-sm py-4 border-t border-border">
-        CalledIt · prediction accountability for people who <em>know</em> they're right
+        ${t('landing.footer')}
       </footer>
     </div>
   `;
 
+  wireLangSwitchers();
+
   $('landing-create').addEventListener('click', async () => {
     const title = $('landing-title').value.trim();
     const errEl = $('landing-create-err');
-    if (!title) { errEl.textContent = 'Give your board a name.'; errEl.classList.remove('hidden'); return; }
+    if (!title) { errEl.textContent = t('landing.errNoName'); errEl.classList.remove('hidden'); return; }
     errEl.classList.add('hidden');
     $('landing-create').disabled = true;
-    $('landing-create').textContent = 'Creating…';
+    $('landing-create').textContent = t('landing.creating');
     try {
       const board = await API.createBoard({ title });
       location.hash = `#/${board.code}`;
@@ -200,7 +509,7 @@ function renderLanding() {
       errEl.textContent = e.message;
       errEl.classList.remove('hidden');
       $('landing-create').disabled = false;
-      $('landing-create').textContent = 'Create Board →';
+      $('landing-create').textContent = t('landing.createBoard');
     }
   });
 
@@ -233,9 +542,9 @@ async function loadBoard(code) {
       <div class="min-h-screen flex items-center justify-center p-8">
         <div class="text-center">
           <div class="text-4xl mb-4">🤔</div>
-          <h2 class="text-h2 text-ink mb-2">Board not found</h2>
-          <p class="text-muted mb-6">"${code}" doesn't exist yet — or it's a typo.</p>
-          <a href="#/" class="text-brand hover:underline">← Back to home</a>
+          <h2 class="text-h2 text-ink mb-2">${t('board.notFound')}</h2>
+          <p class="text-muted mb-6">"${code}" ${t('board.notFoundDesc')}</p>
+          <a href="#/" class="text-brand hover:underline">${t('board.backHome')}</a>
         </div>
       </div>`;
   }
@@ -266,12 +575,15 @@ function renderBoard() {
 
       <!-- Header -->
       <div class="flex flex-col sm:flex-row sm:items-start gap-3 mb-6">
-        <div class="flex-1">
-          <a href="#/" class="text-muted text-sm hover:text-brand transition-colors">← All boards</a>
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-3 flex-wrap">
+            <a href="#/" class="text-muted text-sm hover:text-brand transition-colors whitespace-nowrap">${t('board.allBoards')}</a>
+            <div class="ml-auto">${renderLangSwitcher()}</div>
+          </div>
           <h1 class="font-display text-hero text-ink mt-1 leading-tight">${escHtml(board.title)}</h1>
           <div class="flex items-center gap-2 mt-2 flex-wrap">
             <span class="text-muted text-sm font-mono">${code}</span>
-            <button id="copy-share" class="text-brand text-sm hover:underline transition-colors">Copy link</button>
+            <button id="copy-share" class="text-brand text-sm hover:underline transition-colors">${t('board.copyLink')}</button>
             <input id="share-link-hidden" type="hidden" value="${shareUrl}" />
           </div>
         </div>
@@ -297,11 +609,11 @@ function renderBoard() {
         <div class="flex-1 min-w-0">
 
           <!-- New claim button -->
-          <div class="flex justify-between items-center mb-4">
-            <h2 class="font-semibold text-h2 text-ink">Open Predictions</h2>
+          <div class="flex justify-between items-center mb-4 gap-2">
+            <h2 class="font-semibold text-h2 text-ink">${t('board.openPredictions')}</h2>
             <button id="btn-new-claim"
-              class="bg-brand hover:bg-brand-2 text-bg font-semibold rounded-control px-4 py-2 text-sm transition-colors">
-              + New Claim
+              class="bg-brand hover:bg-brand-2 text-bg font-semibold rounded-control px-4 py-2 text-sm transition-colors whitespace-nowrap">
+              ${t('board.newClaim')}
             </button>
           </div>
 
@@ -309,14 +621,14 @@ function renderBoard() {
           <div id="open-preds-list">
             ${openPreds.length ? openPreds.map(p => renderPredCard(p)).join('') : `
               <div class="bg-surface border border-border rounded-card p-6 text-center text-muted">
-                No open predictions yet. Make the first call!
+                ${t('board.noOpen')}
               </div>`}
           </div>
 
           <!-- Resolved predictions -->
           ${resolvedPreds.length ? `
             <div class="mt-8">
-              <h2 class="font-semibold text-h2 text-ink mb-4">Resolved</h2>
+              <h2 class="font-semibold text-h2 text-ink mb-4">${t('board.resolved')}</h2>
               <div id="resolved-preds-list">
                 ${resolvedPreds.map(p => renderPredCard(p)).join('')}
               </div>
@@ -334,6 +646,7 @@ function renderBoard() {
 
   $('btn-new-claim').addEventListener('click', showNewClaimModal);
 
+  wireLangSwitchers();
   wireMeWidget();
   wireLeaderboard();
   wirePredCards();
@@ -344,12 +657,12 @@ function renderBoard() {
 function renderMeWidget() {
   const { board, myMemberId } = state;
   return `
-    <p class="text-muted text-xs mb-2 font-semibold uppercase tracking-wider">You are</p>
+    <p class="text-muted text-xs mb-2 font-semibold uppercase tracking-wider">${t('me.youAre')}</p>
     <select id="me-select"
       class="w-full bg-surface-2 border border-border rounded-control px-2 py-2 text-ink text-sm focus:border-brand outline-none">
-      <option value="">— pick yourself —</option>
+      <option value="">${t('me.pick')}</option>
       ${board.members.map(m => `<option value="${m.id}" ${m.id === myMemberId ? 'selected' : ''}>${escHtml(m.name)}</option>`).join('')}
-      <option value="__new__">+ Add me…</option>
+      <option value="__new__">${t('me.addMe')}</option>
     </select>
   `;
 }
@@ -374,11 +687,16 @@ function wireMeWidget() {
 
 // ─── LEADERBOARD ─────────────────────────────────────────────────────────────
 
+function mapLabel(label) {
+  const map = { oracle: 'labels.oracle', sharp: 'labels.sharp', decent: 'labels.decent', wishful: 'labels.wishful' };
+  return t(`leaderboard.${map[label] || 'labels.decent'}`);
+}
+
 function renderLeaderboard() {
   const { leaderboard } = state;
   if (!leaderboard.length) return `
     <div class="bg-surface border border-border rounded-card p-5 text-center text-muted text-sm">
-      No ranked members yet. Resolve 3 predictions to rank.
+      ${t('leaderboard.noRanked')}
     </div>`;
 
   const ranked   = leaderboard.filter(r => r.rank !== null);
@@ -397,6 +715,7 @@ function renderLeaderboard() {
     const medal = r.rank && r.rank <= 3 ? medalSymbol[r.rank] : '';
     const lc = labelColor[r.label] || 'bg-muted/20 text-muted';
     const stakeColor = r.net_stake >= 0 ? 'text-hit' : 'text-miss';
+    const netStakeStr = (r.net_stake >= 0 ? '+' : '') + r.net_stake.toFixed(0);
     return `
       <div class="lb-row flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-surface-2 transition-colors ${isFirst ? 'rank-1-glow bg-surface-2' : ''}"
            data-member-id="${r.member_id}" role="button" tabindex="0"
@@ -407,13 +726,13 @@ function renderLeaderboard() {
         </div>
         <div class="flex-1 min-w-0">
           <div class="font-semibold text-ink text-sm truncate">${escHtml(r.member)}</div>
-          <div class="text-muted text-xs">${r.n} calls · ${r.accuracy.toFixed(0)}% acc</div>
+          <div class="text-muted text-xs">${t('leaderboard.calls', { n: r.n })} · ${t('leaderboard.acc', { acc: r.accuracy.toFixed(0) })}</div>
         </div>
         <div class="text-right flex-shrink-0">
           <div class="font-mono text-score text-ink leading-none">${fmtBrier(r.brier)}</div>
           <div class="flex items-center gap-1 justify-end mt-0.5">
-            <span class="text-xs px-1.5 py-0.5 rounded-full font-medium ${lc}">${r.label}</span>
-            <span class="${stakeColor} text-xs font-mono">${r.net_stake >= 0 ? '+' : ''}${r.net_stake.toFixed(0)}</span>
+            <span class="text-xs px-1.5 py-0.5 rounded-full font-medium ${lc}">${mapLabel(r.label)}</span>
+            <span class="${stakeColor} text-xs font-mono">${netStakeStr}</span>
           </div>
         </div>
       </div>`;
@@ -421,13 +740,13 @@ function renderLeaderboard() {
 
   return `
     <div class="bg-surface border border-border rounded-card p-4">
-      <h2 class="font-semibold text-h2 text-ink mb-3">🏆 Leaderboard</h2>
-      <p class="text-muted text-xs mb-3">Brier score (lower = sharper) · click to see calibration</p>
+      <h2 class="font-semibold text-h2 text-ink mb-3">${t('leaderboard.title')}</h2>
+      <p class="text-muted text-xs mb-3">${t('leaderboard.briерHint')}</p>
       <div id="lb-rows" class="space-y-1">
         ${ranked.map(rowHtml).join('')}
         ${unranked.length ? `
           <div class="border-t border-border pt-2 mt-2">
-            <p class="text-muted text-xs mb-1 px-3">Unranked (need 3+ calls)</p>
+            <p class="text-muted text-xs mb-1 px-3">${t('leaderboard.unranked')}</p>
             ${unranked.map(r => `
               <div class="lb-row flex items-center gap-3 p-3 rounded-xl cursor-pointer hover:bg-surface-2 transition-colors opacity-60"
                    data-member-id="${r.member_id}" role="button" tabindex="0">
@@ -436,7 +755,7 @@ function renderLeaderboard() {
                   ${initials(r.member)}
                 </div>
                 <div class="flex-1 text-sm text-muted truncate">${escHtml(r.member)}</div>
-                <div class="text-right text-xs text-muted">${r.note || 'needs more calls'}</div>
+                <div class="text-right text-xs text-muted">${r.note ? t('leaderboard.needMoreCalls') : t('leaderboard.needMoreCalls')}</div>
               </div>`).join('')}
           </div>` : ''}
       </div>
@@ -464,6 +783,8 @@ async function toggleCalibration(memberId) {
   }
   state.selectedMemberId = memberId;
   panel.innerHTML = `<div class="bg-surface border border-border rounded-card p-4"><div class="skeleton h-40 rounded"></div></div>`;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  panel.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' });
   try {
     const [data, lb] = [
       await API.getCalibration(state.code, memberId),
@@ -472,7 +793,7 @@ async function toggleCalibration(memberId) {
     const member = lb.find(r => r.member_id === memberId);
     renderCalibrationPanel(data, member);
   } catch (e) {
-    panel.innerHTML = `<div class="bg-surface border border-border rounded-card p-4 text-miss text-sm">Failed to load calibration.</div>`;
+    panel.innerHTML = `<div class="bg-surface border border-border rounded-card p-4 text-miss text-sm">${t('calibration.failedLoad')}</div>`;
   }
 }
 
@@ -485,26 +806,26 @@ function renderCalibrationPanel(data, member) {
       <div class="flex justify-between items-start mb-3">
         <div>
           <h3 class="font-semibold text-ink">${member ? escHtml(member.member) : 'Member'}</h3>
-          <p class="text-muted text-xs">Calibration chart</p>
+          <p class="text-muted text-xs">${t('calibration.title')}</p>
         </div>
         <button id="cal-close" class="text-muted hover:text-ink text-lg leading-none">&times;</button>
       </div>
       ${member ? `
         <div class="grid grid-cols-2 gap-2 mb-4 text-xs">
           <div class="bg-surface-2 rounded-control p-2">
-            <div class="text-muted">Brier</div>
+            <div class="text-muted">${t('calibration.brier')}</div>
             <div class="font-mono text-ink font-semibold">${fmtBrier(member.brier)}</div>
           </div>
           <div class="bg-surface-2 rounded-control p-2">
-            <div class="text-muted">Accuracy</div>
+            <div class="text-muted">${t('calibration.accuracy')}</div>
             <div class="font-mono text-ink font-semibold">${member.accuracy.toFixed(0)}%</div>
           </div>
           <div class="bg-surface-2 rounded-control p-2">
-            <div class="text-muted">Calls</div>
+            <div class="text-muted">${t('calibration.calls')}</div>
             <div class="font-mono text-ink font-semibold">${member.n}</div>
           </div>
           <div class="bg-surface-2 rounded-control p-2">
-            <div class="text-muted">Net stake</div>
+            <div class="text-muted">${t('calibration.netStake')}</div>
             <div class="font-mono font-semibold ${member.net_stake >= 0 ? 'text-hit' : 'text-miss'}">
               ${member.net_stake >= 0 ? '+' : ''}${member.net_stake.toFixed(0)}
             </div>
@@ -513,7 +834,7 @@ function renderCalibrationPanel(data, member) {
       <div class="relative h-48">
         <canvas id="cal-chart"></canvas>
       </div>
-      <p class="text-muted text-xs mt-2 text-center">Confidence vs Reality · dashed = perfect</p>
+      <p class="text-muted text-xs mt-2 text-center">${t('calibration.footer')}</p>
     </div>`;
 
   $('cal-close').addEventListener('click', () => {
@@ -531,14 +852,14 @@ function renderCalibrationPanel(data, member) {
     data: {
       datasets: [
         {
-          label: 'Your calls',
+          label: t('calibration.yourCalls'),
           data: points,
           backgroundColor: '#F59E0B',
           pointRadius: 6,
           pointHoverRadius: 8,
         },
         {
-          label: 'Perfect',
+          label: t('calibration.perfect'),
           data: diag,
           type: 'line',
           borderColor: '#93A1C0',
@@ -555,13 +876,13 @@ function renderCalibrationPanel(data, member) {
       scales: {
         x: {
           min: 0, max: 100,
-          title: { display: true, text: 'Confidence %', color: '#93A1C0', font: { size: 11 } },
+          title: { display: true, text: t('calibration.confidence'), color: '#93A1C0', font: { size: 11 } },
           ticks: { color: '#93A1C0', font: { size: 10 } },
           grid: { color: '#2A3A5C' },
         },
         y: {
           min: 0, max: 100,
-          title: { display: true, text: 'Reality %', color: '#93A1C0', font: { size: 11 } },
+          title: { display: true, text: t('calibration.reality'), color: '#93A1C0', font: { size: 11 } },
           ticks: { color: '#93A1C0', font: { size: 10 } },
           grid: { color: '#2A3A5C' },
         },
@@ -612,16 +933,16 @@ function renderPredCard(p) {
   const sliderSection = (!isResolved && myId && !hasMyForecast) ? `
     <div class="mt-3 bg-surface-2 rounded-control p-3" data-forecast-area="${p.id}">
       <div class="flex justify-between items-center mb-1">
-        <label class="text-muted text-xs">Your call</label>
+        <label class="text-muted text-xs">${t('pred.yourCall')}</label>
         <span id="prob-display-${p.id}" class="font-mono text-brand text-sm font-semibold">50%</span>
       </div>
       <input type="range" id="prob-slider-${p.id}" min="1" max="99" value="50"
         class="w-full mb-1" aria-label="Probability" />
       <div class="flex justify-between items-center">
-        <span id="prob-hint-${p.id}" class="text-muted text-xs italic">coin flip</span>
+        <span id="prob-hint-${p.id}" class="text-muted text-xs italic">${t('hints.coinFlip')}</span>
         <button data-forecast-btn="${p.id}"
           class="bg-brand hover:bg-brand-2 text-bg text-xs font-semibold rounded-control px-3 py-1.5 transition-colors">
-          Drop your call
+          ${t('pred.dropYourCall')}
         </button>
       </div>
     </div>` : '';
@@ -629,7 +950,7 @@ function renderPredCard(p) {
   const updateForecastSection = (!isResolved && myId && hasMyForecast) ? `
     <div class="mt-3 bg-surface-2 rounded-control p-3" data-forecast-area="${p.id}">
       <div class="flex justify-between items-center mb-1">
-        <label class="text-muted text-xs">Update your call</label>
+        <label class="text-muted text-xs">${t('pred.updateYourCall')}</label>
         <span id="prob-display-${p.id}" class="font-mono text-brand text-sm font-semibold">${fmtProb(myForecast.probability)}</span>
       </div>
       <input type="range" id="prob-slider-${p.id}" min="1" max="99" value="${Math.round(myForecast.probability * 100)}"
@@ -638,7 +959,7 @@ function renderPredCard(p) {
         <span id="prob-hint-${p.id}" class="text-muted text-xs italic">${probHint(Math.round(myForecast.probability * 100))}</span>
         <button data-forecast-btn="${p.id}"
           class="bg-surface hover:bg-border text-ink text-xs font-semibold rounded-control px-3 py-1.5 border border-border transition-colors">
-          Update call
+          ${t('pred.updateCall')}
         </button>
       </div>
     </div>` : '';
@@ -647,11 +968,11 @@ function renderPredCard(p) {
     <div class="mt-3 flex gap-2">
       <button data-resolve-btn="${p.id}" data-outcome="true"
         class="flex-1 bg-hit/10 hover:bg-hit/20 text-hit border border-hit/30 text-xs font-semibold rounded-control px-3 py-2 transition-colors">
-        ✓ It happened
+        ${t('pred.itHappened')}
       </button>
       <button data-resolve-btn="${p.id}" data-outcome="false"
         class="flex-1 bg-miss/10 hover:bg-miss/20 text-miss border border-miss/30 text-xs font-semibold rounded-control px-3 py-2 transition-colors">
-        ✗ It didn't
+        ${t('pred.itDidnt')}
       </button>
     </div>` : '';
 
@@ -666,20 +987,20 @@ function renderPredCard(p) {
           <div class="min-w-0">
             <p class="text-ink font-medium text-body leading-snug">${escHtml(p.claim)}</p>
             <p class="text-muted text-xs mt-0.5">
-              Due ${fmtDate(p.resolve_by)}
-              ${p.stake ? `· <span class="text-pending font-mono">${p.stake} pts stake</span>` : ''}
-              ${isDue && !isResolved ? `· <span class="text-pending font-semibold">DUE NOW</span>` : ''}
+              ${t('pred.due', { date: fmtDate(p.resolve_by) })}
+              ${p.stake ? `· <span class="text-pending font-mono">${t('pred.stake', { stake: p.stake })}</span>` : ''}
+              ${isDue && !isResolved ? `· <span class="text-pending font-semibold">${t('pred.dueNow')}</span>` : ''}
             </p>
           </div>
         </div>
         <div class="flex items-center flex-shrink-0">
-          ${isResolved ? `<span class="text-xs px-2 py-0.5 rounded-full font-medium ${p.outcome === 1 ? 'bg-hit/20 text-hit' : 'bg-miss/20 text-miss'}">${p.outcome === 1 ? 'happened' : "didn't"}</span>` : ''}
+          ${isResolved ? `<span class="text-xs px-2 py-0.5 rounded-full font-medium ${p.outcome === 1 ? 'bg-hit/20 text-hit' : 'bg-miss/20 text-miss'}">${p.outcome === 1 ? t('pred.happened') : t('pred.didnt')}</span>` : ''}
           ${deleteBtn}
         </div>
       </div>
 
       <!-- Forecasters -->
-      ${p.forecasts.length ? `<div class="mt-3 flex flex-wrap gap-1.5">${forecastChips}</div>` : `<p class="mt-3 text-muted text-xs">No forecasts yet.</p>`}
+      ${p.forecasts.length ? `<div class="mt-3 flex flex-wrap gap-1.5">${forecastChips}</div>` : `<p class="mt-3 text-muted text-xs">${t('pred.noForecasts')}</p>`}
 
       ${sliderSection}
       ${updateForecastSection}
@@ -694,7 +1015,7 @@ function refreshOpenPreds() {
   const container = $('open-preds-list');
   if (container) container.innerHTML = openPreds.length
     ? openPreds.map(p => renderPredCard(p)).join('')
-    : `<div class="bg-surface border border-border rounded-card p-6 text-center text-muted">No open predictions yet.</div>`;
+    : `<div class="bg-surface border border-border rounded-card p-6 text-center text-muted">${t('board.noOpenShort')}</div>`;
   wirePredCards();
   // Refresh me widget
   const mw = $('me-widget');
@@ -722,15 +1043,15 @@ function wirePredCards() {
       if (!slider || !state.myMemberId) return;
       const prob = parseInt(slider.value, 10) / 100;
       btn.disabled = true;
-      btn.textContent = 'Saving…';
+      btn.textContent = t('pred.saving');
       try {
         await API.putForecast(predId, { member_id: state.myMemberId, probability: prob });
-        toast('📌 Forecast saved!');
+        toast(t('toast.forecastSaved'));
         await refreshBoardData();
       } catch (e) {
-        toast('Error: ' + e.message);
+        toast(t('toast.errSave'));
         btn.disabled = false;
-        btn.textContent = 'Drop your call';
+        btn.textContent = t('pred.dropYourCall');
       }
     });
   });
@@ -741,18 +1062,18 @@ function wirePredCards() {
       const predId = parseInt(btn.dataset.resolveBtn, 10);
       const outcome = btn.dataset.outcome === 'true';
       btn.disabled = true;
-      btn.textContent = 'Resolving…';
+      btn.textContent = t('pred.resolving');
       try {
         await API.resolvePrediction(predId, { outcome });
         const topMover = state.leaderboard[0];
         toast(topMover
-          ? `🎯 ${topMover.member} called it! Leaderboard updated.`
-          : '🎯 Resolved! Leaderboard updated.');
+          ? t('toast.calledIt', { name: topMover.member })
+          : t('toast.leaderboardUpdated'));
         await refreshBoardData(true);
       } catch (e) {
         toast('Error: ' + e.message);
         btn.disabled = false;
-        btn.textContent = btn.dataset.outcome === 'true' ? '✓ It happened' : '✗ It didn\'t';
+        btn.textContent = btn.dataset.outcome === 'true' ? t('pred.itHappened') : t('pred.itDidnt');
       }
     });
   });
@@ -761,10 +1082,10 @@ function wirePredCards() {
   document.querySelectorAll('[data-delete-btn]').forEach(btn => {
     btn.addEventListener('click', async () => {
       const predId = parseInt(btn.dataset.deleteBtn, 10);
-      if (!confirm('Delete this prediction?')) return;
+      if (!confirm(t('pred.deleteConfirm'))) return;
       try {
         await API.deletePrediction(predId);
-        toast('🗑️ Prediction deleted.');
+        toast(t('toast.predDeleted'));
         await refreshBoardData();
       } catch (e) {
         toast('Error: ' + e.message);
@@ -806,7 +1127,7 @@ async function refreshBoardData(animateLb = false) {
       const openPreds = board.predictions.filter(p => p.status === 'open');
       openContainer.innerHTML = openPreds.length
         ? openPreds.map(p => renderPredCard(p)).join('')
-        : `<div class="bg-surface border border-border rounded-card p-6 text-center text-muted">No open predictions yet.</div>`;
+        : `<div class="bg-surface border border-border rounded-card p-6 text-center text-muted">${t('board.noOpenShort')}</div>`;
       wirePredCards();
     }
 
@@ -822,7 +1143,7 @@ async function refreshBoardData(animateLb = false) {
     if (mw) { mw.innerHTML = renderMeWidget(); wireMeWidget(); }
 
   } catch (e) {
-    toast('Refresh failed: ' + e.message);
+    toast(t('toast.refreshFailed', { msg: e.message }));
   }
 }
 
@@ -832,30 +1153,30 @@ function showNewClaimModal() {
   const today = new Date().toISOString().split('T')[0];
   showModal(`
     <div class="flex justify-between items-center mb-4">
-      <h3 class="font-semibold text-h2 text-ink">New Claim</h3>
+      <h3 class="font-semibold text-h2 text-ink">${t('modal.newClaim')}</h3>
       <button id="modal-close" class="text-muted hover:text-ink text-2xl leading-none">&times;</button>
     </div>
     <div class="space-y-4">
       <div>
-        <label class="block text-muted text-sm mb-1">What are you calling?</label>
+        <label class="block text-muted text-sm mb-1">${t('modal.claimLabel')}</label>
         <textarea id="claim-text" rows="3" maxlength="400"
-          placeholder="We ship before Friday · Evals exceed 90% · Leo will admit he was wrong…"
+          placeholder="${t('modal.claimPlaceholder')}"
           class="w-full bg-surface-2 border border-border rounded-control px-4 py-3 text-ink placeholder-muted text-body focus:border-brand outline-none resize-none"></textarea>
       </div>
       <div>
-        <label class="block text-muted text-sm mb-1">Resolve by</label>
+        <label class="block text-muted text-sm mb-1">${t('modal.resolveByLabel')}</label>
         <input type="date" id="claim-date" min="${today}" value="${today}"
           class="w-full bg-surface-2 border border-border rounded-control px-4 py-3 text-ink text-body focus:border-brand outline-none" />
       </div>
       <div>
-        <label class="block text-muted text-sm mb-1">Stake (optional points)</label>
+        <label class="block text-muted text-sm mb-1">${t('modal.stakeLabel')}</label>
         <input type="number" id="claim-stake" min="0" max="1000" value="5" step="1"
           class="w-full bg-surface-2 border border-border rounded-control px-4 py-3 text-ink text-body focus:border-brand outline-none" />
       </div>
       <div id="claim-err" class="text-miss text-sm hidden"></div>
       <button id="claim-submit"
         class="w-full bg-brand hover:bg-brand-2 text-bg font-semibold rounded-control py-3 text-body transition-colors">
-        Drop this claim →
+        ${t('modal.submitClaim')}
       </button>
     </div>
   `);
@@ -868,21 +1189,21 @@ function showNewClaimModal() {
     const resolveBy = $('claim-date').value;
     const stake = parseFloat($('claim-stake').value) || 0;
     const errEl = $('claim-err');
-    if (!claim) { errEl.textContent = 'Write your claim.'; errEl.classList.remove('hidden'); return; }
-    if (!resolveBy) { errEl.textContent = 'Pick a resolve date.'; errEl.classList.remove('hidden'); return; }
+    if (!claim) { errEl.textContent = t('modal.errWriteClaim'); errEl.classList.remove('hidden'); return; }
+    if (!resolveBy) { errEl.textContent = t('modal.errPickDate'); errEl.classList.remove('hidden'); return; }
     errEl.classList.add('hidden');
     $('claim-submit').disabled = true;
-    $('claim-submit').textContent = 'Posting…';
+    $('claim-submit').textContent = t('modal.posting');
     try {
       await API.addPrediction(state.code, { claim, resolve_by: resolveBy, stake });
       closeModal();
-      toast('🔮 Claim posted!');
+      toast(t('toast.claimPosted'));
       await refreshBoardData();
     } catch (e) {
       errEl.textContent = e.message;
       errEl.classList.remove('hidden');
       $('claim-submit').disabled = false;
-      $('claim-submit').textContent = 'Drop this claim →';
+      $('claim-submit').textContent = t('modal.submitClaim');
     }
   });
 }
@@ -890,19 +1211,19 @@ function showNewClaimModal() {
 function showAddMemberModal() {
   showModal(`
     <div class="flex justify-between items-center mb-4">
-      <h3 class="font-semibold text-h2 text-ink">Join this board</h3>
+      <h3 class="font-semibold text-h2 text-ink">${t('modal.joinBoard')}</h3>
       <button id="modal-close" class="text-muted hover:text-ink text-2xl leading-none">&times;</button>
     </div>
     <div class="space-y-4">
       <div>
-        <label class="block text-muted text-sm mb-1">Your name</label>
-        <input type="text" id="member-name" maxlength="50" placeholder="Your name"
+        <label class="block text-muted text-sm mb-1">${t('modal.yourName')}</label>
+        <input type="text" id="member-name" maxlength="50" placeholder="${t('modal.namePlaceholder')}"
           class="w-full bg-surface-2 border border-border rounded-control px-4 py-3 text-ink placeholder-muted text-body focus:border-brand outline-none" />
       </div>
       <div id="member-err" class="text-miss text-sm hidden"></div>
       <button id="member-submit"
         class="w-full bg-brand hover:bg-brand-2 text-bg font-semibold rounded-control py-3 text-body transition-colors">
-        Join →
+        ${t('modal.join')}
       </button>
     </div>
   `);
@@ -918,10 +1239,10 @@ function showAddMemberModal() {
   $('member-submit').addEventListener('click', async () => {
     const name = $('member-name').value.trim();
     const errEl = $('member-err');
-    if (!name) { errEl.textContent = 'Enter your name.'; errEl.classList.remove('hidden'); return; }
+    if (!name) { errEl.textContent = t('modal.errEnterName'); errEl.classList.remove('hidden'); return; }
     errEl.classList.add('hidden');
     $('member-submit').disabled = true;
-    $('member-submit').textContent = 'Joining…';
+    $('member-submit').textContent = t('modal.joining');
     try {
       const member = await API.addMember(state.code, { name });
       setMyId(state.code, member.id);
@@ -933,7 +1254,7 @@ function showAddMemberModal() {
       errEl.textContent = e.message;
       errEl.classList.remove('hidden');
       $('member-submit').disabled = false;
-      $('member-submit').textContent = 'Join →';
+      $('member-submit').textContent = t('modal.join');
     }
   });
 
