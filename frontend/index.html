@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CalledIt — Shared Prediction Board</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CDN with custom design tokens -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg:        '#0E1525',
+            surface:   '#16213A',
+            'surface-2':'#1E2B47',
+            ink:       '#F1F5FB',
+            muted:     '#93A1C0',
+            border:    '#2A3A5C',
+            brand:     '#F59E0B',
+            'brand-2': '#FBBF24',
+            hit:       '#34D399',
+            miss:      '#FB7185',
+            pending:   '#FBBF24',
+            gold:      '#FBBF24',
+            silver:    '#CBD5E1',
+            bronze:    '#D9A066',
+          },
+          fontFamily: {
+            display: ['Sora', 'sans-serif'],
+            sans:    ['Inter', 'sans-serif'],
+            mono:    ['"JetBrains Mono"', 'monospace'],
+          },
+          borderRadius: {
+            card:    '16px',
+            control: '10px',
+          },
+          fontSize: {
+            hero:  ['40px', '48px'],
+            h2:    ['24px', '30px'],
+            body:  ['15px', '24px'],
+            score: ['28px', '32px'],
+          },
+        }
+      }
+    };
+  </script>
+
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body class="bg-bg font-sans text-ink min-h-screen">
+
+  <!-- App root -->
+  <div id="app"></div>
+
+  <!-- Toast -->
+  <div id="toast" role="alert" aria-live="polite"
+       class="bg-surface-2 border border-brand text-ink text-body rounded-card px-5 py-3 shadow-xl font-medium"></div>
+
+  <!-- Modal -->
+  <div id="modal-backdrop" class="fixed inset-0 bg-black/60 z-50 hidden items-center justify-center p-4">
+    <div id="modal-box" class="bg-surface border border-border rounded-card p-6 w-full max-w-md shadow-2xl card-appear">
+      <div id="modal-content"></div>
+    </div>
+  </div>
+
+  <script src="/app.js" defer></script>
+</body>
+</html>
