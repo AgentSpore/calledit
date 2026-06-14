@@ -1,0 +1,125 @@
+/* CalledIt — custom CSS for things Tailwind CDN can't do inline */
+
+/* Fonts loaded via <link> in index.html */
+
+/* Glow ring for leaderboard #1 */
+.rank-1-glow {
+  box-shadow: 0 0 0 2px #F59E0B, 0 0 24px 4px rgba(245,158,11,0.35);
+}
+
+/* Smooth leaderboard re-rank */
+.lb-row {
+  transition: transform 200ms ease, opacity 200ms ease;
+}
+
+/* Forecast flash animations */
+@keyframes flash-hit {
+  0%   { background-color: rgba(52,211,153,0.4); }
+  100% { background-color: transparent; }
+}
+@keyframes flash-miss {
+  0%   { background-color: rgba(251,113,133,0.3); }
+  100% { background-color: transparent; }
+}
+.flash-hit  { animation: flash-hit  600ms ease-out forwards; }
+.flash-miss { animation: flash-miss 600ms ease-out forwards; }
+
+/* Toast */
+#toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(6rem);
+  transition: transform 300ms ease, opacity 300ms ease;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 9999;
+}
+#toast.show {
+  transform: translateX(-50%) translateY(0);
+  opacity: 1;
+}
+
+/* Slider thumb */
+input[type=range] {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 6px;
+  border-radius: 3px;
+  background: #2A3A5C;
+  outline: none;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #F59E0B;
+  cursor: pointer;
+  box-shadow: 0 0 0 3px rgba(245,158,11,0.3);
+  transition: box-shadow 150ms;
+}
+input[type=range]::-webkit-slider-thumb:hover {
+  box-shadow: 0 0 0 6px rgba(245,158,11,0.25);
+}
+input[type=range]:focus::-webkit-slider-thumb {
+  box-shadow: 0 0 0 6px rgba(245,158,11,0.4);
+}
+input[type=range]::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border: none;
+  border-radius: 50%;
+  background: #F59E0B;
+  cursor: pointer;
+}
+
+/* Amber focus ring override */
+*:focus-visible {
+  outline: 2px solid #F59E0B;
+  outline-offset: 2px;
+}
+
+/* Skeleton shimmer */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, #16213A 25%, #1E2B47 50%, #16213A 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.4s infinite linear;
+  border-radius: 8px;
+}
+
+/* Modal backdrop blur */
+#modal-backdrop {
+  backdrop-filter: blur(4px);
+}
+
+/* Copy tick fade */
+.copy-tick {
+  display: inline-block;
+  animation: fadeOut 1.5s 0.5s forwards;
+}
+@keyframes fadeOut {
+  to { opacity: 0; }
+}
+
+/* Smooth card appear */
+.card-appear {
+  animation: cardIn 200ms ease-out;
+}
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
